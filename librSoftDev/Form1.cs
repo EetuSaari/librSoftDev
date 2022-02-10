@@ -237,7 +237,7 @@ namespace librSoftDev
 
         private void button3_Click(object sender, EventArgs e)
         {
-            //Delete Button configs. WARNING! DO NOT USE. ATM DELETES ALL INFORMATION IN TABLE as
+            //Delete Button configs. WARNING! DO NOT USE. ATM DELETES ALL INFORMATION IN TABLE
             try
             {
                 con.Open();
