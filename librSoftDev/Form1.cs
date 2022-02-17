@@ -125,7 +125,7 @@ namespace librSoftDev
             MySqlCommand cmd = con.CreateCommand();
             cmd.CommandType = CommandType.Text;
 
-            cmd.CommandText = "SELECT * FROM book";
+            cmd.CommandText = "SELECT * FROM books";
 
             cmd.ExecuteNonQuery();
 
@@ -153,8 +153,7 @@ namespace librSoftDev
 
                 cmd.CommandType = CommandType.Text;
 
-                //The box4 and box3 is twisted because there is some order issue in GUI. Use this code to get values correct places in db
-                cmd.CommandText = "insert into book (Kirja, Kirjoittaja, Vuosi, Koodi) values ('" + textBox1.Text + "', '" + textBox2.Text + "', '" + textBox4.Text + "', '" + textBox3.Text + "')";
+                cmd.CommandText = "insert into books (Kirja, Kirjoittaja, Vuosi, Koodi) values ('" + textBox1.Text + "', '" + textBox2.Text + "', '" + textBox3.Text + "', '" + textBox4.Text + "')";
 
                 cmd.ExecuteNonQuery();
 
@@ -224,8 +223,8 @@ namespace librSoftDev
 
                 cmd.Parameters.AddWithValue("@Kirja", textBox1.Text);
                 cmd.Parameters.AddWithValue("@Kirjoittaja", textBox2.Text);
-                cmd.Parameters.AddWithValue("@Vuosi", textBox3.Text);
-                cmd.Parameters.AddWithValue("@Koodi", textBox4.Text);
+                cmd.Parameters.AddWithValue("@Vuosi", textBox4.Text);
+                cmd.Parameters.AddWithValue("@Koodi", textBox3.Text);
 
             }
 
@@ -237,7 +236,7 @@ namespace librSoftDev
 
         private void button3_Click(object sender, EventArgs e)
         {
-            //Delete Button configs. WARNING! DO NOT USE. ATM DELETES ALL INFORMATION IN TABLE
+            //Delete Button configs
             try
             {
                 con.Open();
@@ -245,7 +244,7 @@ namespace librSoftDev
                 MySqlCommand cmd = con.CreateCommand();
                 cmd.CommandType = CommandType.Text;
 
-                cmd.CommandText = "DELETE FROM book WHERE Koodi = Kirja=Kirja";
+                cmd.CommandText = "DELETE FROM `books` WHERE Koodi =  " + textBox6.Text;
                 cmd.ExecuteNonQuery();
                 //con.Close();
 
@@ -270,7 +269,7 @@ namespace librSoftDev
                 MySqlCommand cmd = con.CreateCommand();
                 cmd.CommandType = CommandType.Text;
 
-                cmd.CommandText = "SELECT * FROM book";
+                cmd.CommandText = "SELECT * FROM books";
 
                 cmd.ExecuteNonQuery();
 
@@ -295,6 +294,7 @@ namespace librSoftDev
         private void textBox5_KeyPress(object sender, KeyPressEventArgs e)
         {
             //SearchBox configuration
+
             try
             {
                 con.Open();
@@ -302,7 +302,7 @@ namespace librSoftDev
                 MySqlCommand cmd = con.CreateCommand();
                 cmd.CommandType = CommandType.Text;
 
-                cmd.CommandText = "SELECT * FROM book";
+                cmd.CommandText = "SELECT * FROM books";
 
                 cmd.ExecuteNonQuery();
 
@@ -333,6 +333,7 @@ namespace librSoftDev
             }
 
 
+
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -341,10 +342,11 @@ namespace librSoftDev
             try 
             { 
 
-            textBox1.Text = dataGridView1.SelectedRows[0].Cells[0].Value.ToString();
-            textBox2.Text = dataGridView1.SelectedRows[0].Cells[1].Value.ToString();
-            textBox3.Text = dataGridView1.SelectedRows[0].Cells[2].Value.ToString();
-            textBox4.Text = dataGridView1.SelectedRows[0].Cells[3].Value.ToString();
+            textBox1.Text = dataGridView1.SelectedRows[0].Cells[1].Value.ToString();
+            textBox2.Text = dataGridView1.SelectedRows[0].Cells[2].Value.ToString();
+            textBox3.Text = dataGridView1.SelectedRows[0].Cells[3].Value.ToString();
+            textBox4.Text = dataGridView1.SelectedRows[0].Cells[4].Value.ToString();
+            textBox6.Text = dataGridView1.SelectedRows[0].Cells[0].Value.ToString();
             }
 
             catch(Exception ex) 
@@ -354,6 +356,31 @@ namespace librSoftDev
             }
 
 
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            con.Open();
+
+            //Put this inside a function. See the notes below
+            MySqlCommand cmd = con.CreateCommand();
+            cmd.CommandType = CommandType.Text;
+
+            cmd.CommandText = "show tables;";
+
+            cmd.ExecuteNonQuery();
+
+            DataTable dt = new DataTable();
+
+            MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+
+            da.Fill(dt);
+
+            dataGridView1.DataSource = dt;
+
+            //con.Close();
+            con.Close();
 
         }
     }
